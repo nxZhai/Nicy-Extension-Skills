@@ -1,6 +1,6 @@
 ---
 name: arxiv-pipe
-description: Download PDF and LaTeX source files for a paper from arXiv, perform a comprehensive reading and analysis, and generate a detailed summary note. use when the user provides a URL or ID of an arxiv paper(e.g. "1706.03762", "arxiv.org/abs/1706.03762", "arxivg.org/pdf/1706.03762", "https://arxiv.org/abs/1706.03762", "https://arxiv.org/pdf/1706.03762")
+description: Download PDF and LaTeX source files for a paper from arXiv, perform a comprehensive reading and analysis, and generate a detailed summary note. Use when the user provides a URL or ID of an arxiv paper (e.g. "1706.03762", "arxiv.org/abs/1706.03762", "arxiv.org/pdf/1706.03762", "https://arxiv.org/abs/1706.03762", "https://arxiv.org/pdf/1706.03762")
 argument-hint: "[ARXIV_ID_OR_URL] [SAVE_DIR]"
 allowed-tools: Bash(*), Read, Write, Glob, Grep, WebSearch, WebFetch
 ---
@@ -12,9 +12,9 @@ You will be given two arguments:
 - **$0**, a URL or ID of an arxiv paper
 - **$1**, optional, local directory for storing downloaded files. Default: `papers/`
 
-Download PDF and LaTeX scource files for **$0**, analysis, and generate a detailed summary note, and save them into **$0**.
+Download PDF and LaTeX source files for **$0**, perform a comprehensive analysis, generate a detailed summary note, and save them into **$1**.
 
-## Workflow 1: Downlad PDF and LaTeX source files
+## Workflow 1: Download PDF and LaTeX source files
 
 Extract the paper ID (e.g., 1706.03762) from **$0**. Use the [Download Script](scripts/download_arxiv_paper.py) to download PDF and LaTeX source files, process the LaTeX source code, and then save the results to the specified **$1** directory.
 
@@ -38,10 +38,10 @@ Output:
 
 **Important**: Use Write tool to write markdown directly to `.md` file. Do NOT use Python heredoc or temp scripts.
 
-### Step1 : Read ann summary
+### Step1 : Read and Summarize
 
-Read `tex_txt` and `bib_tex` for structured analysis data, then generate markdown with these sections:
-- Header links (arXiv ID $1, GitHub Link if found in `tex_txt`)
+Read `tex_txt` and `bib_txt` for structured analysis data, then generate markdown with these sections:
+- Header links (arXiv ID $0, GitHub Link if found in `tex_txt`)
 - 研究背景与动机 (3-5 sentences Chinese)
 - 摘要 (full abstract)
 - 论文总结 (2-4 paragraphs Chinese)
@@ -63,13 +63,13 @@ Read `tex_txt` and `bib_tex` for structured analysis data, then generate markdow
 - 参考论文 (读取 `bib_txt`, plain text: Author. "Title." Venue, Year.)
 
 **要求**:
-1. 所有中文内容用中文撰写
+1. 所有要求以中文语言呈现的内容必须以中文撰写
 2. GitHub 链接在开头部分添加
 3. 核心公式必须融入方法流程的对应步骤中，不要单独罗列或硬编码
 4. Baseline 和数据集在最后以纯文本列表形式列出，不使用 markdown link 格式
 5. 实验必须分类（SOTA/消融/泛化/效率等）
 
-### Step 2: Save Summary
+### Step 2: Save the Summary
 
 Use Write tool to write markdown to `$1/{id}.md`.
 
