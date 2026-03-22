@@ -1,13 +1,13 @@
 ---
 name: arxiv-pipe-papers
-description: Process multiple arXiv papers by iteratively calling arxiv-pipe for each paper ID or URL. Use when the user provides a comma-separated list of arXiv IDs or URLs (e.g., "1706.03762, 2603.18656, https://arxiv.org/abs/1706.03762"). This skill triggers when the user wants to analyze multiple papers at once, compare papers, or generate a batch summary of several arXiv papers. Each paper is processed sequentially using the arxiv-pipe workflow.
+description: Process multiple arXiv papers by parallel calling arxiv-pipe skill for each paper ID or URL. Use when the user provides a comma-separated list of arXiv IDs or URLs (e.g., "1706.03762, 2603.18656, https://arxiv.org/abs/1706.03762"). This skill triggers when the user wants to analyze multiple papers at once, compare papers, or generate a batch summary of several arXiv papers. Each paper is processed sequentially using the arxiv-pipe workflow.
 argument-hint: "[ARXIV_IDS_OR_URLS] [SAVE_DIR]"
 allowed-tools: Bash(*), Read, Write, Glob, Grep, WebSearch, WebFetch
 ---
 
 # Arxiv-pipe-papers
 
-Process multiple arXiv papers by iteratively applying the arxiv-pipe workflow to each paper.
+Process multiple arXiv papers by parallel applying the arxiv-pipe workflow to each paper.
 
 ## Input Format
 
@@ -22,29 +22,14 @@ You will receive two arguments:
 
 ## Workflow
 
-### Step 1: Parse and Validate Input
+### Step 1: Processing Papers Using arxiv-pipe
 
-Parse the comma-separated input into a list of individual paper identifiers. Normalize each entry:
-- Strip whitespace
-- Extract ID from URLs (e.g., `https://arxiv.org/abs/1706.03762` → `1706.03762`)
-- Remove duplicates while preserving order
+1. Split **$0** into individual paper IDs (e.g., `2603.18656`, `1706.03762`, ...)
+2. Launch parallel sub-agents (preferably `arxiv-paper-parser`) to concurrently process each paper via the `arxiv-pipe` skill
+   - Pass the paper ID as the first argument
+   - Pass **$1** as the second argument
 
-### Step 2: Process Each Paper
-
-For each paper ID in the list, execute the arxiv-pipe workflow:
-
-1. **Download phase**: Use the download script to fetch PDF and LaTeX source
-   ```
-   python scripts/download_arxiv_paper.py <arxiv_id> -o <output_dir>
-   ```
-
-2. **Summary phase**: Generate Chinese summary following arxiv-pipe's format:
-   - Read `tex_txt` and `bib_txt` files
-   - Generate markdown summary with all required sections
-
-3. **Progress reporting**: After each paper, output a brief status update
-
-### Step 3: Generate Combined Report
+### Step 2: Generate Combined Report
 
 After all papers are processed, generate a summary table:
 
@@ -55,7 +40,7 @@ After all papers are processed, generate a summary table:
 | 2 | 2603.18656 | ... | x MB | x KB | x KB | x KB |
 ```
 
-### Step 4: Output Location
+### Step 3: Output Location
 
 All files are saved to **$1** (or default `papers/`):
 - PDF: `{output_dir}/{id}.pdf`
