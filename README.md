@@ -14,6 +14,15 @@
   - `arxiv-ids-or-urls` 位置参数，逗号分隔的 arXiv ID 或 URL 列表。
   - `- dir: PATH`（可选，default：`papers/`）论文下载位置
 
+- `hf-daily-summary` 获取 Hugging Face 每日热门论文（hf.co/papers），提取论文 ID 后调用 `arxiv-pipe-papers` 批量下载、分析并生成总结。
+  - `limit`（可选，default：`20`）获取论文数量上限
+  - `- dir: PATH`（可选，default：`papers/`）论文下载位置
+
+
+```
+/hf-daily-summary 10 papers/ 每篇论文应启动独立的 subagent 并行处理，summary 格式严格遵循 arxiv-pipe 技能的规范
+```
+
 - `humanizer` 去除 AI 生成文本的痕迹，使文字读起来更自然 human-written。
   - argument: `[待润色文本]`
 
