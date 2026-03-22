@@ -10,6 +10,10 @@
   - `query-or-arxiv-id` 位置参数，搜索内容或arxiv 论文 ID。
   - `- dir: PATH` （可选，defult：`/papers`）论文下载位置
 
+- `arxiv-pipe-papers` 批量论文处理管道。接受逗号分隔的多个 arXiv ID 或 URL，依次调用 `arxiv-pipe` 对每篇论文进行下载、分析和总结，最后输出汇总报告表格。
+  - `arxiv-ids-or-urls` 位置参数，逗号分隔的 arXiv ID 或 URL 列表。
+  - `- dir: PATH`（可选，default：`papers/`）论文下载位置
+
 - `humanizer` 去除 AI 生成文本的痕迹，使文字读起来更自然 human-written。
   - argument: `[待润色文本]`
 
