@@ -6,9 +6,8 @@
 
 ### 论文处理
 
-- `arxiv-pipeline` 论文阅读总结管道。首先从 arxiv 上下载论文的 pdf、targ.gz 源文件，然后对 tex 源代码进行直接阅读、分析公式，输出 markdown 格式的论文总结。
+- `arxiv-pipe` 论文阅读总结管道。首先从 arxiv 上下载论文的 pdf、targ.gz 源文件，然后对 tex 源代码进行直接阅读、分析公式，输出 markdown 格式的论文总结。
   - `query-or-arxiv-id` 位置参数，搜索内容或arxiv 论文 ID。
-  - `- max: N` （可选，default：5）有多个符合条件的论文时，最大下载数目。
   - `- dir: PATH` （可选，defult：`/papers`）论文下载位置
 
 - `humanizer` 去除 AI 生成文本的痕迹，使文字读起来更自然 human-written。
@@ -62,9 +61,6 @@ A `SKILL.md` contains two types of content: **Reference content** and **Task con
   - Read, Grep, Glob, Write, Bash
 
 - `context` set to `fork` to run in a forked subagent context.
-
-
-
 
 ## Claude Code's Bundled skills
 
